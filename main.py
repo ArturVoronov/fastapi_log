@@ -5,12 +5,16 @@ import uvicorn
 from fastapi import Depends, HTTPException
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from models import User
-
-
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 
 app=FastAPI()
 app.include_router(auth_router)
 app.include_router(order_router)
+
+templates = Jinja2Templates(directory='templates')
+
+app.mount("/static", StaticFiles(directory='static'), name='static')
 
 secret_user: str = "newphone"
 
