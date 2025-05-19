@@ -1,0 +1,19 @@
+body{
+    text-align: center;
+    color: #2e1738;
+    background-image: url(./img/f9436810a5f45fa4519232f829139933.jpg);
+}
+.table1{
+    display: flex;
+    justify-content: center;
+    
+
+}
+th, td{
+    border: 2px solid gray;
+    border-radius: 6%;
+    background-color: aliceblue;
+}
+.no{
+    border:medium none red;
+}

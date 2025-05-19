@@ -1,0 +1,30 @@
+body{display:flex;
+justify-content: center;
+}
+h1{
+   border: medium solid rgb(253, 246, 54);
+}
+.no{
+    border: 1px none red;
+}
+.a1{
+    display: inline;
+   text-align:center ;
+
+}
+
+.a2{display: flex;
+    justify-content: center;
+   border: medium solid rgb(253, 246, 54);
+}
+
+.field1{color:aqua;
+    
+}
+.field2{ 
+    color:rgb(96, 23, 160);
+    background:gray;
+}
+.field3{color: beige;
+
+}
