@@ -39,9 +39,9 @@ async def signup(users:SignUpModel):
     return new_user
 def create_users():
     
-    user2=User(username="artyr663",email="art4453@mail.ru", password=generate_password_hash('1234'), is_staff=False, is_active=True)
-    print("ghghg")
-    session.add(user2)
+    user3=User(username= "artyr6635",email="5art4453@mail.ru", password=generate_password_hash('12354'), is_staff=False, is_active=True)
+    print("user3",user3)
+    session.add(user3)
     session.commit()
-    return user2
+    return user3
 #create_users()

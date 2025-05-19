@@ -2,6 +2,7 @@ from fastapi import FastAPI, Form, Request
 from auth_routers import auth_router
 from order_routers import order_router
 import uvicorn
+from typing import Optional
 from fastapi import Depends, HTTPException
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from models import User
@@ -19,6 +20,8 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from operations.operate import get_all
 from fastapi.responses import FileResponse
+from werkzeug.security import generate_password_hash, check_password_hash
+from models import User
 
 app=FastAPI()
 app.include_router(auth_router)
@@ -54,14 +57,16 @@ def index4(request:Request):
     context = {'request': request, 'res':res}
     print('this is res=',res)
     return templates.TemplateResponse("index.html", context)
-import json
 @app.post('/login_to_database',response_class=HTMLResponse)
-async def disable_cat(request: Request, cats: SignUpModel = Form(...)):
+async def disable_cat(request: Request, username:str = Form(...), email:str = Form(...), password:str=Form(...), is_staff:Optional[bool]=Form(...), is_active:Optional[bool]=Form(...)):
     
-    #users={'id'=id, 'username'=username, 'email'=email, 'password'=password, 'is_staff'=is_staff, 'is_active'=is_active}
-    users=json.dump(cats)
-    print('users=',users)
-    db.create_users(users)
+    myusers={"username":username, "email":email, "password":password, "is_staff":is_staff, "is_active":is_active}
+    user4=User(username=myusers['username'], email=myusers['email'], password=generate_password_hash(myusers['password']), is_staff=myusers['is_staff'], is_active=myusers['is_active'])
+    print("user4=",user4.username)
+    #user111={id==cats.id, username==cats.username, email==cats.email, password==cats.password, is_staff==cats.is_staff, is_active==cats.is_active}
+    
+    print('username1============',myusers)
+    db.create_users(user4)
     res = db.get_all()
     context = {'request': request, 'res':res}
     return templates.TemplateResponse("index.html", context)
@@ -69,7 +74,7 @@ async def disable_cat(request: Request, cats: SignUpModel = Form(...)):
 
 secret_user: str = session.query(User.username).all()
 secret_password: str = session.query(User.password).all()
-from werkzeug.security import generate_password_hash, check_password_hash
+
 
 print(secret_user)
 print(secret_password)
