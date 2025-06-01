@@ -9,9 +9,8 @@ from decoders.user_decoder import *
 
 def create_users(user4:SignUpModel):
     try:
-        print('000000000000000000000000')
         req = user4
-        print('req===',req)
+        
         session.add(req)
         session.commit()
         return {
@@ -19,7 +18,6 @@ def create_users(user4:SignUpModel):
             'message':'new user added'
         }
     except Exception as e:
-        print('111111111111111111')
         return {
             'status':'error',
             'message':str(e)

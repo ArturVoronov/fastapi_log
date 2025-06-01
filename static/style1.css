@@ -4,8 +4,10 @@ body{
     color: #2e1738;
     background-image: url(./img/f9436810a5f45fa4519232f829139933.jpg);
 }
-.form-container{
-    margin-right: 50vh;
+body H1{text-align: center;}
+.forma{
+    color: rgb(10, 56, 4);
+    margin-right: 40%;
 }
 .table1{
     display: flex;

@@ -12,16 +12,16 @@ from database import Session, engine
 import decoders.user_decoder as decode
 from schemas import SignUpModel
 from fastapi.responses import HTMLResponse
-from fastapi import FastAPI, Request, Form
+from fastapi.exceptions import HTTPException
 import operations.operate as db
-from fastapi.templating import Jinja2Templates
+
 import uvicorn
-from fastapi.responses import HTMLResponse
-from fastapi.staticfiles import StaticFiles
-from operations.operate import get_all
+
+from fastapi import APIRouter, status
+from operations.operate import get_all, delete_user
 from fastapi.responses import FileResponse
 from werkzeug.security import generate_password_hash, check_password_hash
-from models import User
+
 
 app=FastAPI()
 app.include_router(auth_router)
@@ -66,10 +66,27 @@ async def disable_cat(request: Request, username:str = Form(...), email:str = Fo
     #user111={id==cats.id, username==cats.username, email==cats.email, password==cats.password, is_staff==cats.is_staff, is_active==cats.is_active}
     
     print('username1============',myusers)
+    db_email=session.query(User).filter(User.email==user4.email).first()
+    if db_email is not None:
+        return HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User with the email already exists")
+    print('2')
+    db_username=session.query(User).filter(User.username==user4.username).first()
+    print('3')
+    if db_username is not None:
+        return HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User with the username already exists")
+    print('4')
     db.create_users(user4)
     res = db.get_all()
     context = {'request': request, 'res':res}
     return templates.TemplateResponse("index.html", context)
+
+@app.get('/login_to_database/{id}', response_class=HTMLResponse)
+def index22(request:Request, id):
+    db.delete_user(id)
+    res = db.get_all()
+    context = {'request': request, 'res':res}
+    return templates.TemplateResponse("index.html", context)
+
 
 
 secret_user: str = session.query(User.username).all()
@@ -88,13 +105,13 @@ def get_user(creds: HTTPBasicCredentials = Depends(basic)) -> dict:
         print(s)
         if creds.username == s:
             summa=1
-            print(summa)
+            print('summa=',summa)
     for item1 in secret_password:
         s1=" ".join(item1)
         print(s1)
         if check_password_hash(s1, creds.password):
             summa=summa+1
-            print(summa)
+            print('summa2',summa)
     if summa==2: 
         print(summa)
         return {"username": creds.username, "password": creds.password}
