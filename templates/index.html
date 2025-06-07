@@ -7,19 +7,10 @@
     <title>Document</title>
 </head>
 <body><H1>Пожалуйста зарегистрируйтесь</H1>
-   
+   <a href="http://127.0.0.1:8000/who"><p>Войти</p></a>
     <table class="table1">
        
-            <tr>
-                 <th>id</th>
-                <th>username</th>
-                <th>email</th>
-                
-                <th>is_staff</th>
-                <th>is_active</th>
-                </tr>
-            <tr>
-                 
+            
              <div class="forma">
                 
                <form method="post" action="/login_to_database" class="form-container">
@@ -38,24 +29,11 @@
                 </form>
              </div>
                 
-            {%for item in res.data%}
-            
-            <tr class='field3'>
-             <td>{{item.id}}</td>
-            <td>{{item.username}}</td>
-            <td>{{item.email}}</td>
-            <td>{{item.is_staff}}</td>
-            <td>{{item.is_active}}</td>   
-            <td class="no">
-                 <form action="/login_to_database/{{item.id}}">
-                    <input type="submit" value="{{item.id}} Delete" />
-                </form></td>
-            </tr>
-            
-            {%endfor%}
+           
 
            
             </table>
+        <a href="http://127.0.0.1:8000/database1"><p class="new">База данных</p></a>
            <!-- <p>result{{res}}</p>-->
         
 

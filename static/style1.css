@@ -24,3 +24,20 @@ th, td{
 .no{
     border:medium none red;
 }
+p{  display: inline;
+    border: 3px solid black;
+    padding: 5px 12px;
+    background-color: aqua;
+    border-radius: 12%;
+}
+tr{
+    text-align: center;
+}
+.new{
+    display: inline;
+    border: 3px solid rgb(212, 14, 14);
+    padding: 5px 12px;
+    background-color: aqua;
+    border-radius: 12%;  
+    margin-right: 60%;
+}

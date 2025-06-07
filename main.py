@@ -88,16 +88,11 @@ def index22(request:Request, id):
     return templates.TemplateResponse("index.html", context)
 
 
-
-secret_user: str = session.query(User.username).all()
-secret_password: str = session.query(User.password).all()
-
-
-print(secret_user)
-print(secret_password)
 basic: HTTPBasicCredentials = HTTPBasic()
 @app.get("/who")
 def get_user(creds: HTTPBasicCredentials = Depends(basic)) -> dict:
+    secret_user: str = session.query(User.username).all()
+    secret_password: str = session.query(User.password).all()
     summa=0
     print(summa)
     for item in secret_user:
@@ -116,6 +111,14 @@ def get_user(creds: HTTPBasicCredentials = Depends(basic)) -> dict:
         print(summa)
         return {"username": creds.username, "password": creds.password}
     raise HTTPException(status_code=401, detail="Hey!")
+
+@app.get('/database1', response_class=HTMLResponse)
+def index5(request:Request):   
+    res = db.get_all() 
+    print('ress',res) 
+    context = {'request': request, 'res':res}
+    print('this is res=',res)
+    return templates.TemplateResponse("index1.html", context)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", reload=True)
