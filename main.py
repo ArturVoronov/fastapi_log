@@ -5,7 +5,7 @@ import uvicorn
 from typing import Optional
 from fastapi import Depends, HTTPException
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
-from models import User
+from models import User, Product
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from database import Session, engine
@@ -14,14 +14,10 @@ from schemas import SignUpModel
 from fastapi.responses import HTMLResponse
 from fastapi.exceptions import HTTPException
 import operations.operate as db
-
-import uvicorn
-
 from fastapi import APIRouter, status
 from operations.operate import get_all, delete_user
 from fastapi.responses import FileResponse
 from werkzeug.security import generate_password_hash, check_password_hash
-
 
 app=FastAPI()
 app.include_router(auth_router)
@@ -33,20 +29,30 @@ app.mount("/static", StaticFiles(directory='static'), name='static')
 
 session = Session(bind=engine)
 
+@app.get('/', response_class=HTMLResponse)
+def index55(request:Request):
+    res1 = db.get_products_all()
+    print('res1',res1)
+    context = {'request': request, 'res1':res1}
+    return templates.TemplateResponse("index4.html", context)
 
+@app.get('/products1', response_class=HTMLResponse)
+def index5(request:Request):
+    res = db.get_products_all()
+    context = {'request': request, 'res':res}
+    return templates.TemplateResponse("index3.html", context)
 
-
-@app.get('/index/', response_class=HTMLResponse)
-def index1(request:Request):
-    films=[
-        {'name':'Blade Runner', 'director':'Ridley Scott'},
-        {'name':'Pulp Fiction', 'director':'Quentin Tarantino'},
-        {'name':'Mulholland drive', 'director':'David Lynch'},
-    ]
-    context = {'request': request, 'films':films}
-    return templates.TemplateResponse("index.html", context)
-
-
+@app.post('/products',response_class=HTMLResponse)
+async def disable_cat2(request: Request, name:str = Form(...), category:str = Form(...), description:str=Form(...), price:Optional[float]=Form(...)):
+    print('1')
+    myproducts={"name":name, "category":category, "description":description, "price":price}
+    product4=Product(name=myproducts['name'], category=myproducts['category'], description=myproducts['description'], price=myproducts['price'])
+    print('2')
+    
+    db.create_products(product4)
+    res = db.get_products_all()
+    context = {'request': request, 'res':res}
+    return templates.TemplateResponse("index3.html", context)
 
     
 

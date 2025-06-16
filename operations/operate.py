@@ -1,12 +1,29 @@
 import sys
 sys.path.append('./')
 from database import Session
-from models import User
+from models import User, Product
 import decoders.user_decoder as decode
 from auth_routers import session
-from schemas import SignUpModel
+from schemas import SignUpModel, SignUpModelProduct
 from decoders.user_decoder import *
 
+
+
+def create_products(product4:SignUpModelProduct):
+    try:
+        req = product4
+        
+        session.add(req)
+        session.commit()
+        return {
+            'status': 'ok',
+            'message':'new user added'
+        }
+    except Exception as e:
+        return {
+            'status':'error',
+            'message':str(e)
+        }
 def create_users(user4:SignUpModel):
     try:
         req = user4
@@ -94,6 +111,19 @@ def get_all():
         try:
             res = session.query(User).all()
             docs = decode_todos(res)
+            return {'status':'ok',
+                'data':docs
+                }
+        except Exception as e:
+            return {
+            'status':'error',
+            'message':str(e)
+        }
+
+def get_products_all():
+        try:
+            res1 = session.query(Product).all()
+            docs = decode_todos_product(res1)
             return {'status':'ok',
                 'data':docs
                 }

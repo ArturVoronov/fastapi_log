@@ -1,6 +1,13 @@
 from pydantic import BaseModel
 from typing import Optional
 
+class SignUpModelProduct(BaseModel):
+    id:Optional[int]
+    name:str
+    category:str
+    description:str
+    price:Optional[float]
+
 class SignUpModel(BaseModel):
     id:Optional[int]
     username:str
@@ -18,9 +25,11 @@ class SignUpModel(BaseModel):
                 "password":"password",
                 "is_staff":False,
                 "is_active":True
-            }
+            } 
         }
+    
 
+    
    
 
 
