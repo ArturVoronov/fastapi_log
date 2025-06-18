@@ -54,6 +54,13 @@ async def disable_cat2(request: Request, name:str = Form(...), category:str = Fo
     context = {'request': request, 'res':res}
     return templates.TemplateResponse("index3.html", context)
 
+@app.get('/products/{id}', response_class=HTMLResponse)
+def index5(request:Request, id):
+    db.delete_product(id)
+    res1 = db.get_products_all()
+    context = {'request': request, 'res1':res1}
+    return templates.TemplateResponse("index4.html", context)
+
     
 
 @app.get('/loginusers', response_class=HTMLResponse)

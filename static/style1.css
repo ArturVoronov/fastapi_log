@@ -29,6 +29,8 @@ p{  display: inline;
     padding: 5px 12px;
     background-color: aqua;
     border-radius: 12%;
+    
+
 }
 tr{
     text-align: center;
@@ -39,5 +41,5 @@ tr{
     padding: 5px 12px;
     background-color: aqua;
     border-radius: 12%;  
-    margin-right: 60%;
+    margin-right:80%;
 }

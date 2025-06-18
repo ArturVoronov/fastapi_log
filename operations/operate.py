@@ -132,3 +132,24 @@ def get_products_all():
             'status':'error',
             'message':str(e)
         }
+
+def delete_product(id:int):
+    try:
+        criteria1 = {'id': id}
+        res1 = session.query(Product).filter_by(**criteria1).one_or_none()
+        if res1 is not None:
+            session.delete(res1)
+            session.commit()
+            return {'status':'ok',
+                    'message':"Record deleted successfully"
+                    }
+        else:
+            return {
+                'status':'ok',
+                'message':f'Record with id {id} do not Exist'
+            }
+    except Exception as e:
+        return {
+            'status':'error',
+            'message':str(e)
+        }
