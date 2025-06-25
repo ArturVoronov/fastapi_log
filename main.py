@@ -104,19 +104,21 @@ def index22(request:Request, id):
 basic: HTTPBasicCredentials = HTTPBasic()
 @app.get("/who")
 def get_user(creds: HTTPBasicCredentials = Depends(basic)) -> dict:
+    # -*- coding: utf-8 -*-
     secret_user: str = session.query(User.username).all()
     secret_password: str = session.query(User.password).all()
     summa=0
     print(summa)
+    print(secret_user)
     for item in secret_user:
         s=" ".join(item)
-        print(s)
+        print('secretuser=',s)
         if creds.username == s:
             summa=1
             print('summa=',summa)
     for item1 in secret_password:
         s1=" ".join(item1)
-        print(s1)
+        print('secretpass=',s1)
         if check_password_hash(s1, creds.password):
             summa=summa+1
             print('summa2',summa)
@@ -132,6 +134,51 @@ def index5(request:Request):
     context = {'request': request, 'res':res}
     print('this is res=',res)
     return templates.TemplateResponse("index1.html", context)
+
+@app.get('/loginpass', response_class=HTMLResponse)
+def index44(request:Request):   
+    
+    context = {'request': request}
+    
+    return templates.TemplateResponse("who.html", context)
+
+@app.post('/loginvhod',response_class=HTMLResponse)
+async def logvh(request: Request, username:str = Form(...), password:str=Form(...)): 
+    myusers11={"username":username, "password":password}
+    username1=myusers11['username']
+    password1=(myusers11['password'])
+    secret_user: str = session.query(User.username).all()
+    secret_password: str = session.query(User.password).all()
+    print('secret_user',secret_user)
+    print('password1=',password1)
+    summa=0
+    print(summa)
+    print(secret_user)
+    d_secret_user_to_list=[]
+    d1_secret_password_to_list=[]
+    for item in secret_user:
+        
+        s=" ".join(item)
+        d_secret_user_to_list.append(s)
+        print('d_secret_user_to_list=',d_secret_user_to_list)
+        if  username1 == s:
+            n=d_secret_user_to_list.index(s)         
+            summa=1
+            print('summa=',summa)
+    for item1 in secret_password:
+        s1=" ".join(item1)
+        d1_secret_password_to_list.append(s1)
+        print('s1=',s1)       
+        if check_password_hash(s1, password1):
+            n1=d1_secret_password_to_list.index(s1)
+            summa=2    
+    if summa==2 and n==n1 : 
+        print(summa)
+        context = {'request': request, 'username1':username1, 'password1':password1 }
+ 
+        return templates.TemplateResponse("who1.html", context)
+    raise HTTPException(status_code=401, detail="Hey!")
+    
 
 if __name__ == "__main__":
     uvicorn.run("main:app", reload=True)

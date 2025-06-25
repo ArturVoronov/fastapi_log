@@ -17,7 +17,6 @@ class User(Base):
     
 
 
-
 class Product(Base):  
     __tablename__='products'
     id=Column(Integer, primary_key=True) 
