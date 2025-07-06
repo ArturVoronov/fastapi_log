@@ -178,7 +178,17 @@ async def logvh(request: Request, username:str = Form(...), password:str=Form(..
  
         return templates.TemplateResponse("who1.html", context)
     raise HTTPException(status_code=401, detail="Hey!")
-    
 
+from app.config import MailBody
+from app.mailer import senf_mail
+
+@app.get("/mail"):
+def index2():
+    return {"status":"fastapi mailserver is running"}
+@app.post("/send_email"):
+def schedule_mail(req:MailBody, tasks: BackgroundTasks):
+    data=req.dict()
+    tasks.add_task(senf_mail, data)
+    return {"status":200, "message":"email has scheduled"} 
 if __name__ == "__main__":
     uvicorn.run("main:app", reload=True)
